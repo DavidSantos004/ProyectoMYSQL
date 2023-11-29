@@ -128,7 +128,7 @@ CREATE VIEW ArqueoCajaDiario AS
     FROM Caja c
     JOIN Usuarios u ON c.FKIDUsuario = u.IDUsuario  
     JOIN Facturacion f ON u.IDUsuario = f.IDUsuario
-    WHERE fechaCaja = CURDATE()
+    WHERE fechaCaja = fecha_caja()
     GROUP BY Usuario_que_realizo_el_arqueo , c.IDCaja, c.FKIDUsuario, c.BaseCaja, c.ingresoDiario, c.egresosDiaro, c.fechaCaja;
 
 -- vista para visualizar las ventas del dia
@@ -138,5 +138,5 @@ CREATE VIEW DetallesVentaDiarias AS
     JOIN DetallesVenta dv ON f.IDDetalle = dv.IDDetalle  
     JOIN TipoPago tp ON dv.IDTipoPago = tp.IDTipoPago
     JOIN Producto p ON dv.FKIDProducto = p.IDProducto
-    WHERE f.FechaFacturacion = CURDATE();
+    WHERE f.FechaFacturacion = fecha_DetalleVentasDiarias();
     

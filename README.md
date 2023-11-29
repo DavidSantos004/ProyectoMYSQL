@@ -1581,3 +1581,48 @@ END //
 DELIMITER ;
 CALL CantidadProductosPorProveedor();
 ```
+
+### Vistas
+
+1. Devuelve el arqueo de la caja diario con un fecha especifica
+- Primero creamos una funcion para guardar la fecha en una variable
+
+```sql
+    CREATE FUNCTION fecha_caja() RETURNS DATE DETERMINISTIC NO SQL RETURN @fch_cj_diario;
+```
+- ya creada la funcion toca llamarlo en la vista
+```sql
+CREATE VIEW ArqueoCajaDiario AS 
+    SELECT  u.NombreUsuario AS Usuario_que_realizo_el_arqueo , c.IDCaja, c.FKIDUsuario, c.BaseCaja, c.ingresoDiario, c.egresosDiaro, c.BaseCaja + c.ingresoDiario - c.egresosDiaro as Total_en_caja, c.fechaCaja , COUNT(f.IDFactura) AS Ventas_Realizadas
+    FROM Caja c
+    JOIN Usuarios u ON c.FKIDUsuario = u.IDUsuario  
+    JOIN Facturacion f ON u.IDUsuario = f.IDUsuario
+    WHERE fechaCaja = fecha_caja()
+    GROUP BY Usuario_que_realizo_el_arqueo , c.IDCaja, c.FKIDUsuario, c.BaseCaja, c.ingresoDiario, c.egresosDiaro, c.fechaCaja;
+```
+- ahora consultamos la vista atravez de esta linea de codigo
+```sql
+    SELECT * FROM (SELECT @fch_cj_diario := '2023-11-27' i) alias, ArqueoCajaDiario;
+```
+
+2. Devuelve los detalles de la ventas diarias con un fecha especifica
+
+- Primero creamos una funcion para guardar la fecha en una variable
+
+```sql
+    CREATE FUNCTION fecha_DetalleVentasDiarias() RETURNS DATE DETERMINISTIC NO SQL RETURN @fch_dv_diario;
+```
+- ya creada la funcion toca llamarlo en la vista
+```sql
+CREATE VIEW DetallesVentaDiarias AS
+    SELECT f.IDFactura, f.IDUsuario, f.FechaFacturacion, f.TotalFactura , dv.FKIDProducto, dv.Cantidad , dv.Subtotal, tp.TipoPago, p.NombreMedicamento
+    FROM Facturacion f
+    JOIN DetallesVenta dv ON f.IDDetalle = dv.IDDetalle  
+    JOIN TipoPago tp ON dv.IDTipoPago = tp.IDTipoPago
+    JOIN Producto p ON dv.FKIDProducto = p.IDProducto
+    WHERE f.FechaFacturacion = fecha_DetalleVentasDiarias();
+```
+- ahora consultamos la vista atravez de esta linea de codigo
+```sql
+    SELECT * FROM (SELECT @fch_dv_diario := '2023-11-27' i) alias, DetallesVentaDiarias;
+```

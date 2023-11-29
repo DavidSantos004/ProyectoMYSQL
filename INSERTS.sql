@@ -416,7 +416,8 @@ INSERT INTO Caja (IDCaja, FKIDUsuario, BaseCaja, ingresoDiario, egresosDiaro, fe
 (8, 3, 510.00, 280.00, 120.00, '2023-11-25'),
 (9, 4, 620.00, 400.00, 250.00, '2023-11-26'),
 (10, 5, 530.00, 300.00, 100.00, '2023-11-27'),
-(11, 9, 840.00, 200.00, 98.00,  '2023-11-28');
+(11, 9, 840.00, 200.00, 98.00,  '2023-11-28'),
+(12, 9, 840.00, 200.00, 98.00,  '2023-11-29');
 
 INSERT INTO DetallesVenta (IDDetalle, FKIDUsuario, FKIDProducto, Cantidad, FKPrecioUnitario, Subtotal, IDTipoPago) VALUES
 (1, 6, 6, 2, 200.00, 400.00, 1),

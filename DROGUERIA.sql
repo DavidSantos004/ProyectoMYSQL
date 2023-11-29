@@ -1,3 +1,7 @@
+
+DROP DATABASE IF EXISTS drogueria;
+
+
 CREATE DATABASE drogueria;
 
 USE drogueria;

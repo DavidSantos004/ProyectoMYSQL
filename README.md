@@ -64,7 +64,7 @@ Datos sobre los medicamentos almacenados, como el nombre, la cantidad, la fecha 
 
 Información sobre el dinero que entra y sale cada día, vinculado a las ventas y otros movimientos financieros.
 
-### Detalles de Ventas Diarias:
+### Detalles de Ventas Diarias/Vista:
 
 Registra detalles específicos de las ventas realizadas cada día.
 ### Estantes:
@@ -79,7 +79,7 @@ Clasifica los productos en diferentes categorías.
 
 Registra la información relacionada con las facturas generadas en cada venta.
 
-### Arqueo de Caja Diario:
+### Arqueo de Caja Diario/Vista:
 
 Hace un seguimiento del estado financiero diario, incluyendo las ventas totales, ingresos, egresos y el saldo final.
 
@@ -194,6 +194,28 @@ la base de datos está diseñada para ayudar a gestionar la droguería. Permite 
     - `NumeroTelefonoProveedor`
     - `CorreoProveedor`
 
+11. **ArqueoCajaDiario/Vista**
+    - `Usuario_que_realizo_el_arqueo` Nombre del usuario que realizó el arqueo.
+    - `IDCaja` Identificador único de la caja.
+    - `FKIDUsuario` ID del usuario asociado a la caja.
+    - `BaseCaja` Cantidad base en la caja.
+    - `ingresoDiario` Monto de ingreso diario en la caja.
+    - `egresosDiario` Monto de egresos diarios en la caja.
+    - `Total_en_caja` Resultado del cálculo de la cantidad total en la caja.
+    - `fechaCaja` Fecha del arqueo.
+    - `Ventas_Realizadas` Cantidad de ventas realizadas en esa fecha.
+
+12. **DetallesVentaDiarias/Vista** 
+    - `IDFactura` Identificador único de la factura.
+    - `IDUsuario` ID del usuario relacionado con la factura.
+    - `FechaFacturacion` Fecha en la que se realizó la facturación.
+    - `TotalFactura` Total de la factura.
+    - `FKIDProducto` ID del producto asociado a los detalles de venta.
+    - `Cantidad` Cantidad de productos vendidos.
+    - `Subtotal` Monto subtotal de la venta.
+    - `TipoPago` Tipo de pago utilizado en la transacción.
+    - `NombreMedicamento` Nombre del medicamento vendido.
+
 #### Relaciones:
 
 - `Producto.IDCategoriaProducto` -> CategoriasProductos.IDCategoriaProducto
@@ -220,9 +242,11 @@ la base de datos está diseñada para ayudar a gestionar la droguería. Permite 
 ## Creacion de tablas
 
 El codigo para la creacion de las tablas se llama **DROGUERIA.sql** y lo puedes encontrar en los archivos del repositorio.
-En este archivo tambien encontrara las creaciones de vistas 
+En este archivo tambien encontrara las creaciones de vistas que son `ArqueoCajaDiario` y `DetallesVentaDiarias` Como son vistas no almacenan datos ellas lo que hacen es agarrar datos de otras tablas. pero estas vistas se manejan como si fuera una tabla normal, entonces para acceder a estas vistas lo hacemos como lo hariamos con cualquier otra tabla
 
-
+```sql
+SELECT * FROM Vista_a_consultar;
+```
 ## Inserciones
 
 El codigo para la insercion de los datos se llama **INSERTS.sql** y lo puedes encontrar en los archivos del repositorio

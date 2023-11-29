@@ -1,33 +1,24 @@
--- Consultas para la tabla Producto
 
---Consultas CRUD:
---Create
 
    INSERT INTO Producto (NombreMedicamento, IDCategoriaProducto, NombreComercial, PrincipioActivo, FormaFarmaceutica, Concentracion, PresentacionComercial, NumeroLote, PrecioProducto, FechaFabricacion, FechaVencimiento, PrecioUnitario, FKIDProvedor, FKIDEstante)VALUES 
    ('NombreMedicamento', 1, 'NombreComercial', 'PrincipioActivo', 'FormaFarmaceutica', 'Concentracion', 'PresentacionComercial', 'NumeroLote', 10.50, '2023-01-01', '2023-12-31', 10.00, 1, 1);
-   -- Recuerda cambiar los valores a como lo necesites agregar 
-
---Read
-
+   
+ 
    SELECT * FROM Producto;
 
---Update
+
 
    UPDATE Producto
    SET NombreMedicamento = 'NuevoNombre', PrecioProducto = 15.00
    WHERE IDProducto = 1;
 
-   -- Recuerda cambiar los valores a como lo necesites agregar 
 
---Delete
+
 
    DELETE FROM Producto WHERE IDProducto = 1;
 
 
---Cosultas con procedimientos de almacenado--  
 
-
---1. Encontrar productos con precio mayor al promedio
  
 DELIMITER //
 CREATE PROCEDURE ProductosPrecioMayorPromedio()
@@ -43,7 +34,7 @@ DELIMITER ;
 
 CALL ProductosPrecioMayorPromedio();
 
---2. Mostrar los productos más vendidos por tipo de pago
+
 
 DELIMITER //
 CREATE PROCEDURE ProductosMasVendidosPorTipoPago()
@@ -64,7 +55,6 @@ DELIMITER ;
 CALL ProductosMasVendidosPorTipoPago();
 
 
---3. Encontrar los productos que nunca se han vendido
 
 DELIMITER //
 CREATE PROCEDURE ProductosNuncaVendidos()
@@ -79,7 +69,6 @@ DELIMITER ;
 CALL ProductosNuncaVendidos();
 
 
---4. Productos con menor stock en un estante específico
  sql 
 DELIMITER //
 
@@ -101,7 +90,6 @@ DELIMITER ;
 CALL ProductosMenorStockEnEstante(1);
 
 
---5. procedimiento almacenado que muestre los productos con una cantidad de stock específica y que tenga un precio menor al promedio de los precios de todos los productos en esa categoría
 
  DELIMITER //
 CREATE PROCEDURE ProductosStockYPrecioPorDebajoPromedio(IN cantidadStock INT)
@@ -126,38 +114,29 @@ DELIMITER
 CALL ProductosStockYPrecioPorDebajoPromedio(453); 
 
 
---Consultas para la tabla Inventario
 
---Consultas CRUD--
-
---1. Create agregar un nuevo registro al inventario:
 
 INSERT INTO Inventario (FKIDProducto, FKProductoIDEstante, CantidadStock)
-VALUES (1, 1, 50); -- Agrega 50 unidades del producto con ID 1 al estante con ID 3
+VALUES (1, 1, 50); 
 
 
---2. Read  Mostrar productos con menos stock que la media:
 
 SELECT P.NombreMedicamento, P.IDProducto, I.CantidadStock
 FROM Producto P
 INNER JOIN Inventario I ON P.IDProducto = I.FKIDProducto
 WHERE I.CantidadStock < (SELECT AVG(CantidadStock) FROM Inventario);
 
---3. Update Aumentar el stock de un producto en un estante específico:
 
 UPDATE Inventario
 SET CantidadStock = CantidadStock + 20
-WHERE FKIDProducto = 2 AND FKProductoIDEstante = 4; -- Aumentar en 20 unidades el producto con ID 2 en el estante con ID 4
+WHERE FKIDProducto = 2 AND FKProductoIDEstante = 4; 
 
 
---4. Delete
 
 DELETE FROM Inventario
-WHERE FKIDProducto = 3 AND FKProductoIDEstante = 5; -- Eliminar el registro del producto con ID 3 en el estante con ID 5
+WHERE FKIDProducto = 3 AND FKProductoIDEstante = 5; 
 
---Procedimientos de almacena--
 
---1. Mostrar los productos con stock agotado en un estante específico
 
 DELIMITER //
 CREATE PROCEDURE ProductosStockAgotadoEnEstante(IN idEstante INT)
@@ -173,7 +152,6 @@ DELIMITER ;
 CALL ProductosStockAgotadoEnEstante(3);
 
 
---2. Actualizar el stock en el inventario de todos los productos en base a un aumento general
 
 DELIMITER //
 
@@ -189,7 +167,6 @@ DELIMITER ;
 
 CALL AumentarStockGeneral(3);
 
---3. Eliminar registros de inventario para productos que no se han vendido
 
 
 DELIMITER //
@@ -207,7 +184,6 @@ DELIMITER ;
 
 CALL EliminarProductosNoVendidos();
 
---4.  Mostrar el total de stock en cada estante
 
 DELIMITER //
 
@@ -223,7 +199,6 @@ DELIMITER ;
 
 CALL TotalStockPorEstante();
 
---5. Mostrar productos con bajo stock en un estante específico
 
 DELIMITER //
 
@@ -239,32 +214,23 @@ DELIMITER ;
 
 CALL ProductosBajoStockEnEstante(1, 200);
 
--- Consultas para la tabla Caja
 
---Consultas CRUD--
-
---1. Create -  Agregar un nuevo registro a la caja
 
 INSERT INTO Caja (IDCaja, FKIDUsuario, BaseCaja, ingresoDiario, egresosDiaro, fechaCaja)
 VALUES (12, 14, 500.00, 0.00, 0.00, '2023-11-30');
 
 
---2. Read -  Mostrar información de la caja para un usuario específico
 
 SELECT * FROM Caja WHERE FKIDUsuario = 1;
 
 
---3. Update - Actualizar el registro de la caja para un usuario específico
 
 DELETE FROM Caja WHERE IDCaja = 1 AND FKIDUsuario = 1;
 
---4. Delete - Eliminar un registro de la caja para un usuario específico:
 
 DELETE FROM Caja WHERE FKIDUsuario = 14;
 
---Procedimientos de almacena--
 
---1. Mostrar el saldo máximo entre un rango de fechas
 
 
 DELIMITER //
@@ -284,7 +250,6 @@ DELIMITER ;
 
 CALL SaldoMaximoEntreFechas('2023-11-19', '2023-11-28');
 
---2. Mostrar el detalle de cajas con el promedio de ingresos y egresos por usuario
 
 DELIMITER //
 
@@ -303,7 +268,6 @@ DELIMITER ;
 
 CALL DetalleCajasPromedioIngresosEgresos();
 
---3. Mostrar empleados con el mayor número de cajas hechas y su saldo total
 
 DELIMITER //
 
@@ -321,7 +285,6 @@ DELIMITER ;
 
 CALL EmpleadoConMasCajasYTotalSaldo();
 
---4. Mostrar el detalle de cajas con el promedio de ingresos y egresos por mes
 
 DELIMITER //
 
@@ -343,7 +306,6 @@ DELIMITER ;
 
 CALL DetalleCajasPromedioMes();
 
---5.  calcular el saldo acumulado por empleado 
 
 DELIMITER //
 
@@ -395,17 +357,12 @@ DELIMITER ;
 
 CALL SaldoAcumuladoPorUsuario();
 
--- Consultas para la tabla Estantes
 
---Consultas CRUD--
-
---1. Create
 
 INSERT INTO Estantes (IDEstante, NombreEstante)
 VALUES (11, 'Estante K');
 
 
---2. Read
 
 SELECT e.IDEstante, e.NombreEstante, COALESCE(SUM(i.CantidadStock), 0) AS CantidadTotalProductos
 FROM Estantes e
@@ -413,26 +370,22 @@ LEFT JOIN Inventario i ON e.IDEstante = i.FKProductoIDEstante
 GROUP BY e.IDEstante, e.NombreEstante;
 
 
---3. Update
+
 
 UPDATE Estantes
 SET NombreEstante = 'NuevoNombre'
 WHERE IDEstante = 1;
 
 
---4. Delete
 
 DELETE FROM Estantes
 WHERE IDEstante = 1;
 
--- Eliminar los productos asociados al estante eliminado
 DELETE FROM Inventario
 WHERE FKProductoIDEstante = 1;
 
 
---Procedimientos de almacena--
 
---1. busca los estantes con menor stock promedio de productos y los elimina si están por debajo de 450.
 
 DELIMITER //
 
@@ -464,7 +417,6 @@ DELIMITER ;
 
 CALL EliminarEstantesBajoStockPromedio(450);
 
---2. obtener los estantes con un stock promedio inferior al global, eliminando aquellos que coincidan con ese criterio:
 
 DELIMITER //
 
@@ -488,7 +440,6 @@ DELIMITER ;
 
 CALL EliminarEstantesBajoStockGlobal();
 
---3.  busca aquellos estantes con una cantidad de stock acumulado inferior al promedio global de stock en todos los estantes:
 
 DELIMITER //
 
@@ -510,7 +461,6 @@ DELIMITER ;
 
 CALL EstantesBajoPromedioGlobal();
 
---4.  estantes con el stock más bajo en comparación con otros estantes del mismo tipo
 
 DELIMITER //
 
@@ -530,7 +480,6 @@ DELIMITER ;
 
 CALL EstantesStockMasBajo();
 
---5.  obten el promedio de stock por tipo de estante y muestra aquellos estantes cuyo stock está por debajo de este promedio
 
 DELIMITER //
 
@@ -555,35 +504,26 @@ DELIMITER ;
 
 CALL EstantesBajoStockPromedio();
 
--- Consultas para la tabla CategoriasProductos
 
---Consultas CRUD--
-
---1. Create
 
    INSERT INTO CategoriasProductos (NombreCategoria)
    VALUES ('NombreNuevaCategoria');
 
 
---2. Read
 
    SELECT * FROM CategoriasProductos;
 
---3. Update
 
    UPDATE CategoriasProductos
    SET NombreCategoria = 'NuevoNombreCategoria'
    WHERE IDCategoriaProducto = 1;
 
 
---4. Delete
 
    DELETE FROM CategoriasProductos
    WHERE IDCategoriaProducto = 1;
 
---Procedimientos de almacena--
 
---1. muestra la categoría con la mayor cantidad de productos con un precio por encima del promedio genera
 
 DELIMITER //
 
@@ -604,7 +544,6 @@ END //
 DELIMITER ;
 CALL CategoriaPrecioSuperiorPromedio();
 
---2. muestra la cantidad de productos por categoría que están almacenados en estantes específicos:
 
 DELIMITER //
 
@@ -622,7 +561,6 @@ DELIMITER ;
 
 CALL ProductosPorCategoriaEnEstantes(3);
 
---3. muestra la cantidad promedio de productos por categoría en un rango de precios específico:
 
 DELIMITER //
 
@@ -638,7 +576,6 @@ END //
 DELIMITER ;
 CALL PromedioProductosPorCategoriaEnRangoPrecio(1.00 , 7.00);
 
---4.  muestra la cantidad de productos por categoría con un stock mínimo especificado
 
 DELIMITER //
 
@@ -655,7 +592,6 @@ END //
 DELIMITER ;
 CALL ProductosPorCategoriaConStockMinimo(400);
 
---5.  muestra las categorías de productos que tienen un precio promedio por encima del promedio general de precios de todos los productos
 
 DELIMITER //
 
@@ -674,31 +610,23 @@ END //
 delimiter ;
 CALL CategoriasPrecioPromedioSuperior();
 
--- Consultas para la tabla Facturacion
 
---Consultas CRUD--
-
---1. Create
 
 INSERT INTO Facturacion (IDUsuario, FechaFacturacion, TotalFactura, IDDetalle)
 VALUES (18, '2023-11-28', 150.50, 1);
 
 
---2. Read
+
 
 SELECT * FROM Facturacion WHERE IDFactura = 5;
 
---3. Update
 
 UPDATE Facturacion SET TotalFactura = 180.25 WHERE IDFactura = 5;
 
---4. Delete
 
 DELETE FROM Facturacion WHERE IDFactura = 5;
 
---Procedimientos de almacena--
 
---1. devuelve detalles de facturación completos, incluyendo el número total de detalles por factura, la cantidad total de productos por factura y el subtotal total por factura.
 
 DELIMITER //
 
@@ -731,7 +659,7 @@ END //
 DELIMITER ;
 CALL DetallesFacturacionCompleta();
 
---2. 
+
 
 DELIMITER //
 
@@ -760,7 +688,6 @@ DELIMITER ;
 
 CALL DetallesFacturaPorUsuario(4);
 
---3. calcular el total de facturación por usuario
 
 DELIMITER //
 
@@ -776,7 +703,6 @@ DELIMITER ;
 
 CALL TotalFacturacionPorUsuario();
 
---4. obtener el detalle de facturación por usuario
 
 DELIMITER //
 
@@ -794,7 +720,6 @@ DELIMITER ;
 
 CALL DetalleFacturacionPorUsuario(5);
 
---5.  calcular el total de ventas por usuario y rango de fechas
 
 DELIMITER //
 
@@ -811,31 +736,24 @@ DELIMITER ;
 
 CALL TotalVentasPorUsuarioEnFecha(4, '2023-11-19', '2023-11-28');
 
--- Consultas para la tabla Usuarios
-    
---Consultas CRUD--
 
---1. Create
 
 INSERT INTO Usuarios (NombreUsuario, Nombre, Apellidos, Tipo)
 VALUES ('nombre_usuario', 'nombre', 'apellidos', 'Tipo_Usuario');
 
---2. Read
+
 
 SELECT * FROM Usuarios;
 
---3. Update
 
 UPDATE Usuarios
 SET Nombre = 'nuevo_nombre', Apellidos = 'nuevos_apellidos'
 WHERE IDUsuario = id_usuario_a_actualizar;
 
---4. Delete
 
 DELETE FROM Usuarios WHERE IDUsuario = id_usuario_a_eliminar;
 
---Procedimientos de almacena--
---1. Encontrar los usuarios que han realizado compras todos los días durante un período
+
 
 DELIMITER //
 CREATE PROCEDURE UsuariosQueCompraronTodosLosDias(IN fechaInicio DATE, IN fechaFin DATE)
@@ -851,7 +769,6 @@ DELIMITER ;
 
 CALL UsuariosQueCompraronTodosLosDias('2023-11-25','2023-11-28');
 
---2. recupera información de la tabla Usuarios, contando el total de facturas, el total de detalles de venta y el total de detalles de venta relacionados por usuario.
 
 DELIMITER //
 
@@ -878,7 +795,6 @@ DELIMITER ;
 
 CALL UsuariosComplejo();
 
---3. Procedimiento para obtener usuarios con el mayor total en caja
 
 DELIMITER //
 
@@ -897,7 +813,6 @@ END //
 DELIMITER ;
 CALL UsuarioMayorTotalCaja();
 
---4.  proporciona información detallada sobre la facturación para cada usuario, incluyendo el total de facturas, el número total de detalles de facturación y el número de detalles de venta relacionados
 
 DELIMITER //
 
@@ -923,7 +838,6 @@ END //
 DELIMITER ;
 CALL DetallesFacturacionUsuarios();
 
---5. obtener información sobre las ventas diarias por usuario, incluyendo tanto el total de productos vendidos como el usuario que realizó el gasto máximo en ese día en particular.
 
 DELIMITER //
 
@@ -946,36 +860,27 @@ DELIMITER ;
 CALL VentasYUsuarioMasGasto();
 
 
--- Consultas para la tabla TipoPago
 
---Consultas CRUD--
-
---1. Create
 
 INSERT INTO TipoPago (IDTipoPago, TipoPago)
 VALUES (11, 'NuevoTipoPago');
 
 
---2. Read
 
 SELECT * FROM TipoPago;
 
---3. Update
 
 UPDATE TipoPago
 SET TipoPago = 'Tarjeta de crédito'
 WHERE IDTipoPago = 2;
 
 
---4. Delete
 
 DELETE FROM TipoPago
 WHERE IDTipoPago = 3;
 
 
---Procedimientos de almacena--
 
---1.  muestra el número total de detalles de venta asociados a ese tipo de pago
 
 DELIMITER //
 
@@ -991,7 +896,6 @@ END //
 DELIMITER ;
 CALL ObtenerInfoTipoPago(1);
 
---2. calcular el total de detalles de venta asociados a cada tipo de pago. Si no hay detalles de venta para un tipo de pago específico, el resultado será cero
 
 DELIMITER //
 
@@ -1010,11 +914,10 @@ END //
 DELIMITER ;
 CALL DetallesTipoPago(1);
 
---3. muestra la cantidad máxima de detalles de venta asociados a un tipo de pago
 
 
 
---4.
+
 
 DELIMITER //
 
@@ -1037,7 +940,6 @@ END //
 DELIMITER ;
 CALL DetallesTipoPagoComplejos();
 
---5.  Muestra el total de detalles de venta y la suma total de ventas para cada tipo de pago
 
 DELIMITER //
 
@@ -1054,39 +956,24 @@ END //
 DELIMITER ;
 CALL TipoPagoDetallesComplejos();
 
--- Consultas para la tabla DetallesVenta
 
---Consultas CRUD--
-
---1. Create
-
--- Agregar un nuevo detalle de venta
 INSERT INTO DetallesVenta (FKIDUsuario, FKIDProducto, Cantidad, FKPrecioUnitario, Subtotal, IDTipoPago)
 VALUES (valor_IDUsuario, valor_IDProducto, valor_cantidad, valor_precio_unitario, valor_subtotal, valor_IDTipoPago);
 
---2. Read
 
--- Mostrar detalles de venta por ID
 SELECT * FROM DetallesVenta WHERE IDDetalle = valor_IDDetalle;
 
--- Mostrar todos los detalles de venta
 SELECT * FROM DetallesVenta;
 
---3. Update
 
--- Actualizar cantidad y subtotal de un detalle de venta específico
 UPDATE DetallesVenta
 SET Cantidad = nuevo_valor_cantidad, Subtotal = nuevo_valor_subtotal
 WHERE IDDetalle = valor_IDDetalle;
 
---4. Delete
 
--- Eliminar un detalle de venta por ID
 DELETE FROM DetallesVenta WHERE IDDetalle = valor_IDDetalle;
 
---Procedimientos de almacena--
 
---1.  filtra las ventas cuya cantidad total sea mayor a 5
 
 DELIMITER //
 
@@ -1116,7 +1003,6 @@ END //
 DELIMITER ;
 CALL DetallesVentaDetallado();
 
---2. devuelve detalles de ventas asociados con ese producto específico.
 
 DELIMITER //
 
@@ -1142,7 +1028,6 @@ END //
 DELIMITER ;
 CALL DetallesVentaEspecificos(1);
 
---3. recupera los detalles de ventas para una fecha específica 
 
 DELIMITER //
 
@@ -1167,7 +1052,6 @@ END //
 DELIMITER ;
 CALL DetallesVentaPorFecha('2023-11-25');
 
---4. recupera los detalles de ventas para un usuario específico, mostrando el nombre del medicamento, la cantidad vendida, el subtotal y el tipo de pago asociado a cada detalle de venta.
 
 DELIMITER //
 
@@ -1189,7 +1073,7 @@ END //
 DELIMITER ;
 CALL DetallesVentasPorUsuario(3);
 
---5.
+
 
 DELIMITER //
 
@@ -1209,43 +1093,27 @@ END //
 DELIMITER ;
 CALL VentasPorProductoEnFecha('2023-11-25');
 
--- Consultas para la tabla Provedores
 
---Consultas CRUD--
-
---1. Create
-
--- Agregar un nuevo proveedor
 INSERT INTO Proveedores (Empresa, NombreProveedor, ContactoProveedor, NumeroTelefonoProveedor, CorreoProveedor)
 VALUES ('Nombre de la empresa', 'Nombre del proveedor', 'Contacto', 'Número de teléfono', 'Correo electrónico');
 
 
---2. Read
 
--- Mostrar todos los proveedores
 SELECT * FROM Proveedores;
 
--- Mostrar proveedores por ID
 SELECT * FROM Proveedores WHERE IDProveedor = valor_IDProveedor;
 
 
---3. Update
 
--- Actualizar información de un proveedor específico
 UPDATE Proveedores
 SET Empresa = 'Nueva empresa', NombreProveedor = 'Nuevo nombre', ContactoProveedor = 'Nuevo contacto'
 WHERE IDProveedor = valor_IDProveedor;
 
 
---4. Delete
 
--- Eliminar un proveedor por ID
 DELETE FROM Proveedores WHERE IDProveedor = valor_IDProveedor;
 
 
---Procedimientos de almacena--
-
---1. muestra el ID del proveedor, la empresa y el nombre del proveedor, además de la cantidad de productos asociados al proveedor y la cantidad de esos productos que están en el inventario.
 
 DELIMITER //
 
@@ -1261,7 +1129,6 @@ END //
 DELIMITER ;
 CALL ObtenerInfoProveedoresDetallada();
 
---2.  muestra el ID del proveedor, la empresa y el nombre del proveedor, junto con la cantidad de productos que tiene asociados en el inventario
 
 DELIMITER //
 
@@ -1277,7 +1144,6 @@ END //
 DELIMITER ;
 CALL DetallesInventarioProveedores();
 
---3.  muestra el ID del proveedor, la empresa y el nombre del proveedor, junto con el total de compras realizadas a cada uno
 
 DELIMITER //
 
@@ -1294,7 +1160,6 @@ END //
 DELIMITER ;
 CALL ComprasPorProveedor();
 
---4. presenta el ID del proveedor, el nombre de la empresa y del proveedor, y los detalles de los productos que suministra cada proveedor, incluyendo el ID del producto, su nombre, forma farmacéutica y precio.
 
 DELIMITER //
 
@@ -1308,7 +1173,6 @@ END //
 DELIMITER ;
 CALL DetallesProductosPorProveedor();
 
---5. devuelve el ID y el nombre del proveedor junto con la cantidad total de productos que suministra cada uno.
 
 DELIMITER //
 

@@ -380,7 +380,7 @@ BEGIN
     WHERE Inv.CantidadStock = cantidadStock;
 END //
 
-DELIMITER 
+DELIMITER ;
 CALL ProductosStockYPrecioPorDebajoPromedio(453); 
 ```
 
@@ -1181,7 +1181,7 @@ END //
 DELIMITER ;
 CALL DetallesFacturacionUsuarios();
 ```
-5. 
+5. Obtener información sobre los usuarios, sus ventas totales y el máximo gasto diario entre esos usuarios para la fecha actual. 
 ```sql
 DELIMITER //
 
@@ -1447,7 +1447,7 @@ END //
 DELIMITER ;
 CALL DetallesVentasPorUsuario(3);
 ```
-5.
+5. Recuperar información sobre las ventas de productos para una fecha específica.
 ```sql
 DELIMITER //
 

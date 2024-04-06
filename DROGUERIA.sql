@@ -121,6 +121,28 @@ ALTER TABLE
 ALTER TABLE
     `Facturacion` ADD CONSTRAINT `facturacion_iddetalle_foreign` FOREIGN KEY(`IDDetalle`) REFERENCES `DetallesVenta`(`IDDetalle`);
 
+DELIMITER $$
+
+-- Función para obtener la fecha actual para el arqueo de la caja
+CREATE FUNCTION fecha_caja()
+RETURNS DATE
+DETERMINISTIC
+BEGIN
+    DECLARE fecha DATE;
+    SELECT fechaCaja INTO fecha FROM Caja ORDER BY fechaCaja DESC LIMIT 1;
+    RETURN fecha;
+END$$
+
+-- Función para obtener la fecha actual para las ventas del día
+CREATE FUNCTION fecha_DetalleVentasDiarias()
+RETURNS DATE
+DETERMINISTIC
+BEGIN
+    RETURN CURDATE(); -- Utiliza CURDATE() para obtener la fecha actual
+END$$
+
+DELIMITER ;
+
 -- vista para visulizar el arqueo de la caja:
 
 CREATE VIEW ArqueoCajaDiario AS 
